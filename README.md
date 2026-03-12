@@ -33,7 +33,7 @@ Run `rclone config` twice to create both remotes:
 | `b2-readonly` | `listFiles`, `readFiles`, `writeFiles` | `b2-full-copy.sh`, `b2-dynamic-copy.sh` |
 | `b2-readwrite` | `listFiles`, `readFiles`, `writeFiles`, `deleteFiles` | `b2-retention.sh` |
 
-> Create separate application keys in the Backblaze dashboard (**Buckets → App Keys → Add a New Application Key**), one per remote, with the appropriate permissions for each.
+> Create separate application keys in the Backblaze dashboard (**Buckets → App Keys → Add a New Application Key**), one per remote, with the appropriate permissions for each. Recommend setting object lock on Backblaze bucket 1d below 30d to ensure against accidental deletion, as the script is dependent on the host machine having the correct time.
 
 ---
 
