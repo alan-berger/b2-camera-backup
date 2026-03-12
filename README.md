@@ -11,7 +11,7 @@ Bluecherry splits recordings into 15-minute MP4 segments. These scripts are desi
 | Script | Purpose |
 |--------|---------|
 | `b2-full-copy.sh` | One-time full backup of all recordings |
-| `b2-dynamic-copy.sh` | Incremental daily backup across all camera channels (designed for cron) |
+| `b2-incremental-copy.sh` | Incremental daily backup across all camera channels (designed for cron) |
 | `b2-retention.sh` | Deletes files older than 30 days from B2 (can be run once per day) |
 
 ---
@@ -30,7 +30,7 @@ Run `rclone config` twice to create both remotes:
 
 | Remote name | Required B2 permissions | Used by |
 |-------------|------------------------|---------|
-| `b2-readonly` | `listFiles`, `readFiles`, `writeFiles` | `b2-full-copy.sh`, `b2-dynamic-copy.sh` |
+| `b2-readonly` | `listFiles`, `readFiles`, `writeFiles` | `b2-full-copy.sh`, `b2-incremental-copy.sh` |
 | `b2-readwrite` | `listFiles`, `readFiles`, `writeFiles`, `deleteFiles` | `b2-retention.sh` |
 
 > Create separate application keys in the Backblaze dashboard (**Buckets → App Keys → Add a New Application Key**), one per remote, with the appropriate permissions for each. Recommend setting object lock on Backblaze bucket 1d below 30d to ensure against accidental deletion, as the script is dependent on the host machine having the correct time.
@@ -51,7 +51,7 @@ B2_DEST_PATH="b2-bucket-path-here"                    # Path within the bucket
 LOG_FILE="/var/log/b2-fullbackup.log"
 ```
 
-### `b2-dynamic-copy.sh`
+### `b2-incremental-copy.sh`
 
 ```bash
 SOURCE_BASE="/path/to/bluecherry-docker/recordings/"  # Local Bluecherry recordings path
@@ -100,8 +100,8 @@ This copies the entire `SOURCE_BASE` directory tree to B2. It can safely be re-r
 Run on a schedule (every 15–30 minutes via cron) to keep B2 up to date:
 
 ```bash
-chmod +x b2-dynamic-copy.sh
-./b2-dynamic-copy.sh
+chmod +x b2-b2-incremental-copy.sh
+./b2-b2-incremental-copy.sh
 ```
 
 The script iterates over every channel defined in `CAMERA_CHANNELS` and backs up each one for the current date. The `--min-age 10s` flag ensures rclone skips any files still being written by Bluecherry (i.e. the current active 15-minute segment), so only completed segments are uploaded.
@@ -111,7 +111,7 @@ It also includes a **midnight boundary guard**: during the `00:xx` hour, the pre
 **Recommended cron entry** (every 15 minutes):
 
 ```
-*/15 * * * * /home/me/b2-dynamic-copy.sh
+*/15 * * * * /home/me/b2-b2-incremental-copy.sh
 ```
 
 ### Retention Cleanup
@@ -156,7 +156,7 @@ camera-backups/
                 └── *.jpg
 ```
 
-Channel IDs correspond to Bluecherry's internal camera numbering. Add all of your active channel IDs to the `CAMERA_CHANNELS` array in `b2-dynamic-copy.sh`.
+Channel IDs correspond to Bluecherry's internal camera numbering. Add all of your active channel IDs to the `CAMERA_CHANNELS` array in `b2-b2-incremental-copy.sh`.
 
 ---
 
@@ -165,7 +165,7 @@ Channel IDs correspond to Bluecherry's internal camera numbering. Add all of you
 | Script | Default log path |
 |--------|-----------------|
 | `b2-full-copy.sh` | `/var/log/b2-fullbackup.log` |
-| `b2-dynamic-copy.sh` | `/var/log/b2-backup.log` |
+| `b2-b2-incremental-copy.sh` | `/var/log/b2-backup.log` |
 | `b2-retention.sh` | `/var/log/b2retention.log` |
 
 All scripts append timestamped entries to their log files. rclone's own output is also written to the same log.
