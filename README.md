@@ -12,7 +12,7 @@ Bluecherry splits recordings into 15-minute MP4 segments. These scripts are desi
 |--------|---------|
 | `b2-full-copy.sh` | One-time full backup of all recordings |
 | `b2-dynamic-copy.sh` | Incremental daily backup across all camera channels (designed for cron) |
-| `b2-retention.sh` | Deletes files older than 30 days from B2 |
+| `b2-retention.sh` | Deletes files older than 30 days from B2 (can be run once per day) |
 
 ---
 
