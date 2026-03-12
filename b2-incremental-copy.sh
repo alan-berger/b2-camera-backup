@@ -22,9 +22,9 @@ SOURCE_BASE="/home/me/bluecherry-docker/recordings"
 
 # rclone remote configured with listFiles, readFiles, writeFiles permissions
 # (no delete permissions required for backup)
-RCLONE_REMOTE="b2-readonly"
-B2_BUCKET="GLaDOSB2"
-B2_DEST_PATH="camera-backups"
+RCLONE_REMOTE="rclone-config-name-here"
+B2_BUCKET="b2-bucket-name-here"
+B2_DEST_PATH="b2-bucket-path-here"
 
 # Camera channel directories to back up.
 # Add or remove channel IDs to match your Bluecherry setup.
@@ -120,3 +120,4 @@ else
     log "Backup finished with errors"
     [ -n "$HEALTHCHECK_FAIL" ] && curl -fsS -m 10 "$HEALTHCHECK_FAIL" >/dev/null 2>&1
 fi
+
