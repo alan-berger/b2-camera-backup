@@ -2,6 +2,14 @@
 
 A set of bash scripts to back up [Bluecherry DVR](https://www.bluecherrydvr.com/) recordings (MP4 + JPG files) to a private [Backblaze B2](https://www.backblaze.com/b2/cloud-storage.html) bucket using [rclone](https://rclone.org/), with automated retention management.
 
+![Shell](https://img.shields.io/badge/shell-bash-blue)
+![License](https://img.shields.io/badge/license-MIT-green)
+![Backblaze B2](https://img.shields.io/badge/storage-Backblaze%20B2-red)
+![rclone](https://img.shields.io/badge/sync-rclone-brightgreen)
+![Least Privilege](https://img.shields.io/badge/credentials-least%20privilege%20remotes-important)
+![Retention](https://img.shields.io/badge/retention-30%20day%20automated-informational)
+![Healthcheck](https://img.shields.io/badge/monitoring-healthchecks.io-yellow)
+
 Bluecherry splits recordings into 15-minute MP4 segments. These scripts are designed around that structure.
 
 ---
